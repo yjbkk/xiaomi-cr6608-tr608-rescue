@@ -1,6 +1,6 @@
 # 小米 / 红米 MT7621 救砖 + 刷 OpenWrt 实战手册（CR6608 / TR608 / CR660x）
 
-> Field-proven on 2026-10-30 on a Xiaomi **TR608**（移动定制版 CR6608）：全砖 → 原厂 uboot TFTP 救活 → 解锁 SSH → breed → OpenWrt 25.12.6，每一步都在真机上验证过。
+> Field-proven on 2026-10-30 on a Xiaomi **TR608**（移动定制版 CR6608）：全砖 → 原厂 uboot TFTP 救活 → 解锁 SSH → breed → OpenWrt 25.12.6 → v2rayA 透明代理软路由，每一步都在真机上验证过。
 > 写给人，也写给 agent：所有步骤带命令、判定条件和失败分支。
 
 ## 适用机型
@@ -16,12 +16,14 @@
 - **砖了**（灯常红或紫/粉闪、网口链路 Up 1Gbps 但零流量零 ARP）：原厂 uboot 还活着。进恢复模式（断电 → 按住 reset 通电 → 灯变色闪烁后松开），uboot 会**先发 DHCP DISCOVER（vendor-class 字段就是 `U-Boot`）**，拿到 IP 后再发 TFTP RRQ，文件名是**自身 IP 的十六进制 + `.img`**（如 192.168.31.2 → `C0A81F02.img`）。
   **这条路只认带 `HDR1` 头的小米官方 ROM**；OpenWrt 裸 uImage 会被完整传完但不写 flash，机器照旧砖。
 - **能进系统**：xmir-patcher 解锁 SSH（密码是 `root`，不是 web 密码）→ 备份 4 个分区 → `mtd write` breed r1338 → breed 网页**两段式**刷 OpenWrt initramfs → 起来后 `sysupgrade`。
+- **想当软路由 / 导入机场订阅**：见 [SOFTROUTER.md](SOFTROUTER.md)（v2rayA + xray，含 OpenWrt 25.12 apk 离线安装法）。
 - 分步命令与判定见 [RUNBOOK.md](RUNBOOK.md)；症状→原因→处置见 [TROUBLESHOOTING.md](TROUBLESHOOTING.md)；固件直链与校验值见 [firmware-manifest.json](firmware-manifest.json)；DHCP/TFTP 服务脚本在 [tools/](tools)。
 
 ## 仓库结构
 
 ```
 RUNBOOK.md              可执行手册：阶段 0 侦察 → 阶段 1 救砖 → 阶段 2 刷 OpenWrt → 阶段 3 收尾
+SOFTROUTER.md           软路由化：v2rayA + xray 机场订阅/透明代理，OpenWrt 25.12 apk 离线安装
 TROUBLESHOOTING.md      症状对照表（灯色、链路、ARP、TFTP、SSH、网段冲突）
 firmware-manifest.json  官方 ROM / OpenWrt / breed / xmir-patcher 的直链、大小、sha256
 tools/uboot-dhcpd.js    恢复模式专用 DHCP 应答器（按 vendor-class/MAC 过滤，不毒化局域网）
@@ -38,4 +40,4 @@ tools/dhcp-parse.js     从 pcapng 里解析 DHCP 选项，用于确认对端是
 
 ## 已验证环境
 
-Windows 10 + Git Bash + Node 24 + OpenSSH 9.9；路由器先刷红米 AX1800 官方固件 1.0.88；OpenWrt 25.12.6（ramips/mt7621）；breed r1338（git-839fb85）。
+Windows 10 + Git Bash + Node 24 + OpenSSH 9.9；路由器先刷红米 AX1800 官方固件 1.0.88；OpenWrt 25.12.6（ramips/mt7621，apk 包管理）；breed r1338（git-839fb85）；v2rayA 2.2.7.5 + xray-core 26.3.27。
