@@ -1,0 +1,58 @@
+{
+  "generated": "2026-10-30",
+  "verified_on": "Xiaomi TR608 (CR6608 移动定制版), MT7621A / 256MB RAM / 128MB NAND",
+  "device_family": ["CR6608", "TR608", "CR6606", "CR6609", "RA71"],
+  "openwrt_release_base": "https://downloads.openwrt.org/releases/25.12.6/targets/ramips/mt7621/",
+  "openwrt_sha256sums": "https://downloads.openwrt.org/releases/25.12.6/targets/ramips/mt7621/sha256sums",
+  "artifacts": [
+    {
+      "id": "stock-ax1800-rom",
+      "purpose": "uboot TFTP 恢复模式唯一可接受的镜像（HDR1 头）；CR6608/TR608 可直刷",
+      "url": "https://bigota.miwifi.com/xiaoqiang/rom/ra71/miwifi_ra71_firmware_e8042_1.0.88.bin",
+      "mirror": "https://cdn.cnbj1.fds.api.mi-img.com/xiaoqiang/rom/ra71/miwifi_ra71_firmware_e8042_1.0.88.bin",
+      "size": 13239240,
+      "sha256": "82cf14ab93aa1e2013d7142a94f84fe6c5edabb73a6e701baca98238e24b3003",
+      "header_magic": "HDR1",
+      "rename_to": "<uboot 拿到的 IP 的十六进制>.img，例如 C0A81F02.img"
+    },
+    {
+      "id": "openwrt-cr6608-initramfs-kernel",
+      "purpose": "breed 首刷的内存系统镜像",
+      "url": "https://downloads.openwrt.org/releases/25.12.6/targets/ramips/mt7621/openwrt-25.12.6-ramips-mt7621-xiaomi_mi-router-cr6608-initramfs-kernel.bin",
+      "size": 7821419,
+      "sha256": "4b3fc47bda73fec2ae3210269cdd054645a90d90741c8972e289eaa906695186"
+    },
+    {
+      "id": "openwrt-cr6608-sysupgrade",
+      "purpose": "initramfs 起来后 sysupgrade 持久化",
+      "url": "https://downloads.openwrt.org/releases/25.12.6/targets/ramips/mt7621/openwrt-25.12.6-ramips-mt7621-xiaomi_mi-router-cr6608-squashfs-sysupgrade.bin",
+      "size": 8018494,
+      "sha256": "856f05d5dd20cd52c8b3676fc1bfca60a3f4f4d9da35da2c768be1c3649d9311"
+    },
+    {
+      "id": "openwrt-cr6608-firmware-firstflash",
+      "purpose": "首刷完整 firmware 分区镜像；注意它没有 HDR1 头，不能走原厂 uboot 恢复模式",
+      "url": "https://downloads.openwrt.org/releases/25.12.6/targets/ramips/mt7621/openwrt-25.12.6-ramips-mt7621-xiaomi_mi-router-cr6608-squashfs-firmware.bin",
+      "size": 9961472,
+      "sha256": "808f181aa962b7b9fb87e7feb43dd1d6276882209ed6ade5f59dc26351c5e2f6"
+    },
+    {
+      "id": "breed-r1338-r3g",
+      "purpose": "不死 bootloader；站点根路径即 r1338，勿用 r1416",
+      "url": "https://breed.hackpascal.net/breed-mt7621-xiaomi-r3g.bin",
+      "size": 116934,
+      "sha256": "2e0c6b4ffe8e4a74b7dc9c1f732dab03158dfe4c5f0b30425d9326836b5cec70",
+      "md5": "a9bc8da9d1b673748e079a9e7fb9e388"
+    },
+    {
+      "id": "xmir-patcher",
+      "purpose": "解锁 SSH（AX1800/RA71 1.0.88 命中 exploit datacenter7）；zip 内容随上游变化，sha 仅为本次实测快照",
+      "url": "https://codeload.github.com/openwrt-xiaomi/xmir-patcher/zip/refs/heads/main",
+      "sha256": "236a01abe8bf229625e09bbb43f1b2342bf3998ba37f09dc9703949b9ddbbb04"
+    }
+  ],
+  "notes": [
+    "设备专属备份（Bootloader/Nvram/Bdata/Factory 分区镜像）含 WiFi 校准与运营商密钥，禁止公开分享，本仓库不包含。",
+    "OpenWrt 新版本请重新拉 sha256sums 核对文件名与校验值后再替换 URL 中的版本号。"
+  ]
+}
